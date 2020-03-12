@@ -1,4 +1,4 @@
-#Pomidor
+# Pomidor
 
-A desktop pomodoro timer.
+A desktop pomodoro timer. 
 
