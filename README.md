@@ -22,3 +22,9 @@ A desktop pomodoro timer.
 - [ ] Track pauses in log as parts of activities
 - [ ] Keyboard shortcuts
 - [ ] Add funny quotes
+
+## Issues and bugs
+
+- Timer moves slightly due to varying with as the time value changes
+- Start / Pause button does not have a constant width and changes size when text changes between "Start" and "Pause"
+
