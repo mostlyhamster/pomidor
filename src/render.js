@@ -23,7 +23,7 @@ const buttonIncreaseActivityDuration = document.getElementById('button-activity-
  */
 let isPaused = true;
 
-const activityStartDate = new Date()
+let activityStartDate = new Date()
 let activityPausedTime = new Date();
 let activityEndDate = new Date(activityStartDate)
 activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POMODORO_SECONDS)
@@ -32,14 +32,7 @@ activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POM
  * Button behaviour
  */
 buttonStartActivity.addEventListener('click', (event) => {
-    if (isPaused) {
-        const pauseDiff = new Date() - activityPausedTime
-        activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + pauseDiff)
-    } else {
-        activityPausedTime = new Date()
-    }
-    isPaused = !isPaused
-    buttonStartActivity.innerText = isPaused ? 'Start' : 'Pause'
+    isPaused ? unpause() : pause()
 })
 
 buttonIncreaseActivityDuration.addEventListener('click', (event) => {
@@ -50,6 +43,10 @@ buttonIncreaseActivityDuration.addEventListener('click', (event) => {
     } else {
         doCountdown()
     }
+})
+
+buttonResetActivity.addEventListener('click', (event) => {
+    reset()
 })
 
 setInterval(() => {
@@ -66,3 +63,38 @@ const doCountdown = () => {
 const updateTimer = (time) => {
     timerElement.innerText = time.getMinutes() + ':'  + time.getSeconds()
 }
+
+const reset = () => {
+    pause()
+    activityStartDate = new Date()
+    activityPausedTime = new Date();
+    activityEndDate = new Date(activityStartDate)
+    activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POMODORO_SECONDS)
+
+    if (isPaused) {
+        const diffMillis = activityEndDate - activityPausedTime
+        updateTimer(new Date(diffMillis))
+    } else {
+        doCountdown()
+    }
+}
+
+const pause = () => {
+    console.log('pause')
+    activityPausedTime = new Date()
+    isPaused = true
+    buttonStartActivity.innerText = 'Start';
+}
+
+
+const unpause = () => {
+    console.log('unpause')
+    if (isPaused) {
+        const pauseDiff = new Date() - activityPausedTime
+        activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + pauseDiff)
+    }
+    isPaused = false
+    buttonStartActivity.innerText = 'Pause'
+}
+
+reset()
