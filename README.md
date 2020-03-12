@@ -13,5 +13,6 @@ A desktop pomodoro timer.
 - [ ] Sound alert settings: mute, change sound, change volume
 - [ ] Desktop notifications
 - [ ] Activity log
+- [ ] Track pauses in log as parts of activities
 - [ ] Keyboard shortcuts
 - [ ] Add funny quotes
