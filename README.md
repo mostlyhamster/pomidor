@@ -7,10 +7,11 @@ A desktop pomodoro timer.
 ## Tasklist
 
 - [x] Design the timer page
-- [x] Implement basic functions
+- [x] Implement basic timer functions
     - [x] start / pause
     - [x] increase activity duration 
     - [x] reset activity duration 
+- [ ] Implement activity selection
 - [ ] Show next activity
 - [ ] Possibility for fast forward to next activity
 - [ ] Option to customize duration of activities
