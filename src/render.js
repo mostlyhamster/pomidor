@@ -61,7 +61,10 @@ const doCountdown = () => {
 }
 
 const updateTimer = (time) => {
-    timerElement.innerText = time.getMinutes() + ':'  + time.getSeconds()
+    timerElement.innerText = 
+        new String(time.getMinutes()).padStart(2, '0') 
+        + ':'  
+        + new String(time.getSeconds()).padStart(2, '0')
 }
 
 const reset = () => {
