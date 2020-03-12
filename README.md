@@ -8,6 +8,11 @@ A desktop pomodoro timer.
 
 - [x] Design the timer page
 - [ ] Implement basic functions
+    - [x] start / pause
+    - [ ] increase activity duration 
+    - [ ] reset activity duration 
+- [ ] Show next activity
+- [ ] Possibility for fast forward to next activity
 - [ ] Option to customize duration of activities
 - [ ] Sound alert on activity completion
 - [ ] Sound alert settings: mute, change sound, change volume
