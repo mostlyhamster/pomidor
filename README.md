@@ -14,3 +14,4 @@ A desktop pomodoro timer.
 - [ ] Desktop notifications
 - [ ] Activity log
 - [ ] Keyboard shortcuts
+- [ ] Add funny quotes
