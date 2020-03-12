@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Pomidor!</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+  <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+  <link rel="stylesheet" href="index.css">
+  <script defer src="render.js"></script>
+</head>
+
+<body>
+  <header>
+    <section class="section">
+      <h1 class="title">💖 Pomidor!</h1>
+      <p class="subtitle">Embrace the tomato. Be the tomato. Tomato.</p>
+    </section>
+  </header>
+  <main class="box">
+    <div class="buttons is-centered">
+        <button class="button is-medium is-active">Pomodoro</button>
+        <button class="button is-medium">Shorter break</button>
+        <button class="button is-medium">Longer break</button>
+    </div>
+    <section class="section timer-contaiener">
+      <h2 class="is-above-timer">we can do this!</h2>
+      <time id="timer" class="timer" datetime="PT50M">50:00</time>
+      <p class="is-under-timer">NEXT UP: SHORT BREAK</p>
+    </section>
+    <section>
+      <div class="buttons is-centered">
+        <button class="button is-medium is-danger is-outlined">Reset</button>
+        <button class="button is-medium">Start</button>
+        <button class="button is-medium">More time</button>
+        <button class="button is-medium ">Next</button>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>
