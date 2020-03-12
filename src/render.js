@@ -31,7 +31,7 @@ activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POM
 /**
  * Button behaviour
  */
-buttonStartActivity.addEventListener('click', (e) => {
+buttonStartActivity.addEventListener('click', (event) => {
     if (isPaused) {
         const pauseDiff = new Date() - activityPausedTime
         activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + pauseDiff)
@@ -42,6 +42,16 @@ buttonStartActivity.addEventListener('click', (e) => {
     buttonStartActivity.innerText = isPaused ? 'Start' : 'Pause'
 })
 
+buttonIncreaseActivityDuration.addEventListener('click', (event) => {
+    activityEndDate.setMinutes(activityEndDate.getMinutes() + 1)
+    if (isPaused) {
+        const diffMillis = activityEndDate - activityPausedTime
+        updateTimer(new Date(diffMillis))
+    } else {
+        doCountdown()
+    }
+})
+
 setInterval(() => {
    doCountdown();
 }, 1000)
@@ -50,5 +60,9 @@ const doCountdown = () => {
     if (isPaused) return
     const diffMillis = activityEndDate - new Date()
     const diffDate = new Date(diffMillis)
-    timerElement.innerText = diffDate.getMinutes() + ':'  + diffDate.getSeconds()
+    updateTimer(diffDate)
+}
+
+const updateTimer = (time) => {
+    timerElement.innerText = time.getMinutes() + ':'  + time.getSeconds()
 }

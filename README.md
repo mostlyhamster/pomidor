@@ -9,7 +9,7 @@ A desktop pomodoro timer.
 - [x] Design the timer page
 - [ ] Implement basic functions
     - [x] start / pause
-    - [ ] increase activity duration 
+    - [x] increase activity duration 
     - [ ] reset activity duration 
 - [ ] Show next activity
 - [ ] Possibility for fast forward to next activity
