@@ -5,6 +5,13 @@ const DEFAULT_DURATION_POMODORO_SECONDS = 25 * 60
 const DEFAULT_DURATION_SHORT_BREAK_SECONDS = 5 * 60
 const DEFAULT_DURATION_LONG_BREAK_SECONDS = 15 * 60
 
+const activities = {
+    POMODORO: 'pomodoro',
+    SHORT_BREAK: 'short break',
+    LONG_BREAK: 'long break',
+    PAUSE: 'pause',
+}
+
 /**
  * Main timer element
  */
@@ -22,7 +29,7 @@ const buttonIncreaseActivityDuration = document.getElementById('button-activity-
  * State
  */
 let isPaused = true;
-
+let currectActivity = activities.POMODORO
 let activityStartDate = new Date()
 let activityPausedTime = new Date();
 let activityEndDate = new Date(activityStartDate)
