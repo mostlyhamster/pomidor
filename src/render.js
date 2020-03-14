@@ -1,15 +1,14 @@
 /**
  * Constants
  */
-const DEFAULT_DURATION_POMODORO_SECONDS = 25 * 60
-const DEFAULT_DURATION_SHORT_BREAK_SECONDS = 5 * 60
-const DEFAULT_DURATION_LONG_BREAK_SECONDS = 15 * 60
+const DEFAULT_DURATION_POMODORO_SECONDS = 15
+const DEFAULT_DURATION_SHORT_BREAK_SECONDS = 5
+const DEFAULT_DURATION_LONG_BREAK_SECONDS = 10
 
 const activities = {
     POMODORO: 'pomodoro',
     SHORT_BREAK: 'short break',
     LONG_BREAK: 'long break',
-    PAUSE: 'pause',
 }
 
 /**
@@ -17,6 +16,63 @@ const activities = {
  */
 const timerElement = document.getElementById('timer')
 
+/**
+ * Activity buttons
+ */
+const buttonShortBreak = document.getElementById('button-activity-break-short')
+const buttonLongBreak = document.getElementById('button-activity-break-long')
+const buttonPomodoro = document.getElementById('button-activity-pomodoro')
+
+const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
+
+buttonShortBreak.addEventListener('click', (event) => {
+    setActivity(activities.SHORT_BREAK, false)
+    activityButtons.forEach(btn => btn.classList.remove('is-active'))
+    buttonShortBreak.classList.add('is-active')
+});
+
+buttonLongBreak.addEventListener('click', (event) => {
+    setActivity(activities.LONG_BREAK, false)
+    activityButtons.forEach(btn => btn.classList.remove('is-active'))
+    buttonLongBreak.classList.add('is-active')
+});
+
+buttonPomodoro.addEventListener('click', (event) => {
+    setActivity(activities.POMODORO, false)
+    activityButtons.forEach(btn => btn.classList.remove('is-active'))
+    buttonPomodoro.classList.add('is-active')
+});
+
+/**
+ * @param {Object} activity 
+ */
+const setActivity = (activity, force) => {
+    if (activity === currectActivity && force === false) return
+    currectActivity = activity;
+    activityStartDate = new Date()
+    activityStartDate.setMilliseconds(999)
+    activityEndDate = new Date(activityStartDate)
+    activityPausedTime = new Date(activityStartDate)
+    pauseDelta = new Date(activityStartDate)
+    activityEndDate.setSeconds(activityStartDate.getSeconds() + getActivityDurationInSeconds(activity))
+    doCountdown()
+}
+
+
+
+const getActivityDurationInSeconds = (activity) => {
+    console.log('check activity ', activity)
+    switch (activity) {
+        case activities.POMODORO:
+            return DEFAULT_DURATION_POMODORO_SECONDS
+        case activities.SHORT_BREAK:
+            return DEFAULT_DURATION_SHORT_BREAK_SECONDS
+        case activities.LONG_BREAK:
+            return DEFAULT_DURATION_LONG_BREAK_SECONDS
+        default:
+            throw new Error('Unknown activity: ' + activity);
+    }
+}
 /*
  * Function buttons
  */
@@ -31,7 +87,8 @@ const buttonIncreaseActivityDuration = document.getElementById('button-activity-
 let isPaused = true;
 let currectActivity = activities.POMODORO
 let activityStartDate = new Date()
-let activityPausedTime = new Date();
+let activityPausedTime = new Date(activityStartDate);
+let pauseDelta = new Date(activityPausedTime)
 let activityEndDate = new Date(activityStartDate)
 activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POMODORO_SECONDS)
 
@@ -44,12 +101,7 @@ buttonStartActivity.addEventListener('click', (event) => {
 
 buttonIncreaseActivityDuration.addEventListener('click', (event) => {
     activityEndDate.setMinutes(activityEndDate.getMinutes() + 1)
-    if (isPaused) {
-        const diffMillis = activityEndDate - activityPausedTime
-        updateTimer(new Date(diffMillis))
-    } else {
-        doCountdown()
-    }
+    doCountdown()
 })
 
 buttonResetActivity.addEventListener('click', (event) => {
@@ -58,12 +110,17 @@ buttonResetActivity.addEventListener('click', (event) => {
 
 setInterval(() => {
    doCountdown();
-}, 1000)
+}, 500)
 
 const doCountdown = () => {
-    if (isPaused) return
-    const diffMillis = activityEndDate - new Date()
-    const diffDate = new Date(diffMillis)
+    let now = new Date()
+    if (isPaused) {
+        let delta = now - pauseDelta;
+        activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + delta)
+    }
+    pauseDelta = now;
+    let diff = activityEndDate - now
+    const diffDate = new Date(diff)
     updateTimer(diffDate)
 }
 
@@ -75,23 +132,15 @@ const updateTimer = (time) => {
 }
 
 const reset = () => {
+    setActivity(currectActivity, true)
     pause()
-    activityStartDate = new Date()
-    activityPausedTime = new Date();
-    activityEndDate = new Date(activityStartDate)
-    activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POMODORO_SECONDS)
-
-    if (isPaused) {
-        const diffMillis = activityEndDate - activityPausedTime
-        updateTimer(new Date(diffMillis))
-    } else {
-        doCountdown()
-    }
 }
 
 const pause = () => {
     console.log('pause')
+    if(isPaused) return;
     activityPausedTime = new Date()
+    
     isPaused = true
     buttonStartActivity.innerText = 'Start';
 }
@@ -99,10 +148,6 @@ const pause = () => {
 
 const unpause = () => {
     console.log('unpause')
-    if (isPaused) {
-        const pauseDiff = new Date() - activityPausedTime
-        activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + pauseDiff)
-    }
     isPaused = false
     buttonStartActivity.innerText = 'Pause'
 }
