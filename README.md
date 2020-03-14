@@ -11,7 +11,7 @@ A desktop pomodoro timer.
     - [x] start / pause
     - [x] increase activity duration 
     - [x] reset activity duration 
-- [ ] Implement activity selection
+- [x] Implement activity selection
 - [ ] Show next activity
 - [ ] Possibility for fast forward to next activity
 - [ ] Option to customize duration of activities
