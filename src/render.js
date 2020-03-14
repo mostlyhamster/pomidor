@@ -49,16 +49,11 @@ buttonPomodoro.addEventListener('click', (event) => {
 const setActivity = (activity, force) => {
     if (activity === currectActivity && force === false) return
     currectActivity = activity;
-    activityStartDate = new Date()
-    activityStartDate.setMilliseconds(999)
-    activityEndDate = new Date(activityStartDate)
-    activityPausedTime = new Date(activityStartDate)
-    pauseDelta = new Date(activityStartDate)
-    activityEndDate.setSeconds(activityStartDate.getSeconds() + getActivityDurationInSeconds(activity))
+    timeLeftMillis = getActivityDurationInSeconds(activity) * 1000
+    lastPulse = new Date()
+    lastPulse.setMilliseconds(999)
     doCountdown()
 }
-
-
 
 const getActivityDurationInSeconds = (activity) => {
     console.log('check activity ', activity)
@@ -84,13 +79,10 @@ const buttonIncreaseActivityDuration = document.getElementById('button-activity-
 /**
  * State
  */
+let timeLeftMillis = 0;
+let lastPulse = new Date()
 let isPaused = true;
 let currectActivity = activities.POMODORO
-let activityStartDate = new Date()
-let activityPausedTime = new Date(activityStartDate);
-let pauseDelta = new Date(activityPausedTime)
-let activityEndDate = new Date(activityStartDate)
-activityEndDate.setSeconds(activityStartDate.getSeconds() + DEFAULT_DURATION_POMODORO_SECONDS)
 
 /**
  * Button behaviour
@@ -100,7 +92,7 @@ buttonStartActivity.addEventListener('click', (event) => {
 })
 
 buttonIncreaseActivityDuration.addEventListener('click', (event) => {
-    activityEndDate.setMinutes(activityEndDate.getMinutes() + 1)
+    timeLeftMillis += 1 * 60 * 1000
     doCountdown()
 })
 
@@ -113,22 +105,24 @@ setInterval(() => {
 }, 500)
 
 const doCountdown = () => {
-    let now = new Date()
-    if (isPaused) {
-        let delta = now - pauseDelta;
-        activityEndDate.setMilliseconds(activityEndDate.getMilliseconds() + delta)
+    const now = new Date()
+    if (!isPaused) {
+        timeLeftMillis = timeLeftMillis - (now - lastPulse)
     }
-    pauseDelta = now;
-    let diff = activityEndDate - now
-    const diffDate = new Date(diff)
-    updateTimer(diffDate)
+    lastPulse = now;
+    updateTimerValue()
 }
 
-const updateTimer = (time) => {
-    timerElement.innerText = 
-        new String(time.getMinutes()).padStart(2, '0') 
-        + ':'  
-        + new String(time.getSeconds()).padStart(2, '0')
+const updateTimerValue = () => {
+    const time = new Date(timeLeftMillis)
+    if (timeLeftMillis <= 0) {
+        timerElement.innerText = '00:00'
+    } else {
+        timerElement.innerText = 
+            new String(time.getMinutes()).padStart(2, '0') 
+            + ':'  
+            + new String(time.getSeconds()).padStart(2, '0')
+    }
 }
 
 const reset = () => {
@@ -139,8 +133,6 @@ const reset = () => {
 const pause = () => {
     console.log('pause')
     if(isPaused) return;
-    activityPausedTime = new Date()
-    
     isPaused = true
     buttonStartActivity.innerText = 'Start';
 }
