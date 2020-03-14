@@ -18,11 +18,11 @@ let state = {
 }
 
 
-let pulse = null
-const init = () => {
-    clearInterval(pulse)
-    pulse = setInterval(() => {
-        doCountdown();
+let pulseInterval = null
+const start = () => {
+    clearInterval(pulseInterval)
+    pulseInterval = setInterval(() => {
+        pulse();
      }, 500)
      reset()
 }
@@ -54,10 +54,10 @@ const setActivity = (activity, force) => {
     state.timeLeftMillis = getActivityDurationInSeconds(activity) * 1000
     state.lastPulse = new Date()
     state.lastPulse.setMilliseconds(999)
-    doCountdown()
+    pulse()
 }
 
-const doCountdown = () => {
+const pulse = () => {
     const now = new Date()
     if (!state.pause) {
         state.timeLeftMillis = state.timeLeftMillis - (now - state.lastPulse)
@@ -66,7 +66,7 @@ const doCountdown = () => {
     state.onPulse(state.timeLeftMillis)
 }
 
-const buildTimerValue = () => {
+const getSuggestedTimerValue = () => {
     const time = new Date(state.timeLeftMillis)
     if (state.timeLeftMillis <= 0) {
         return '00:00'
@@ -94,7 +94,7 @@ const unpause = () => {
 
 
 const Pomidorek = {
-    init: init,
+    start: start,
     pause: pause,
     unpause: unpause,
     isPaused: () => state.pause,
@@ -103,6 +103,7 @@ const Pomidorek = {
     addTime: addTime,
     getTimeRemaining: () => state.timeLeftMillis,
     setPulseCallback: (callback) => state.onPulse = callback,
+    getSuggestedTimerValue: getSuggestedTimerValue,
 }
 
 export default Pomidorek
