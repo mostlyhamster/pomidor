@@ -15,9 +15,9 @@ A desktop pomodoro timer.
 - [x] Show next activity
 - [x] Possibility for fast forward to next activity
 - [ ] Option to customize duration of activities
-- [ ] Sound alert on activity completion
+- [x] Sound alert on activity completion
 - [ ] Sound alert settings: mute, change sound, change volume
-- [ ] Desktop notifications
+- [x] Desktop notifications
 - [ ] Activity log
 - [ ] Track pauses in log as parts of activities
 - [ ] Keyboard shortcuts

@@ -19,6 +19,7 @@ let state = {
     onActivityChanged: (newActivity) => true,
     activityLog: [],
     muted: false,
+    notificationsEnabled: true,
 }
 
 
@@ -72,6 +73,7 @@ const pulse = () => {
     if (state.timeLeftMillis <= 0 && state.activityComplete === false) {
         state.activityComplete = true
         playSound()
+        showNotification()
     }
     state.lastPulse = now;
     state.onPulse(state.timeLeftMillis)
@@ -131,6 +133,20 @@ const playSound = () => {
     if (state.muted) return
     const audio = new Audio('../assets/audio/timer-bell.mp3');
     audio.play()
+}
+
+const isBreak = () => {
+    return !(state.currectActivity === activities.POMODORO)
+}
+
+const showNotification = () => {
+    const msg = isBreak() 
+        ? 'Break is over, time to wørk again' 
+        : 'Awesome, you finished your pomodoro. Have a break!'
+
+    new Notification("Hello, it's your favorite tomato 🍅", {
+        body: msg
+    })
 }
 
 const Pomidorek = {
