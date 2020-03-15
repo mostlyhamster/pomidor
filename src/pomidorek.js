@@ -14,7 +14,8 @@ let state = {
     lastPulse : new Date(),
     pause : true,
     currectActivity : activities.POMODORO,
-    onPulse: (timeLeftMillis) => true
+    onPulse: (timeLeftMillis) => true,
+    activityLog: [],
 }
 
 
@@ -54,6 +55,7 @@ const setActivity = (activity, force) => {
     state.timeLeftMillis = getActivityDurationInSeconds(activity) * 1000
     state.lastPulse = new Date()
     state.lastPulse.setMilliseconds(999)
+    state.activityLog.push(activity)
     pulse()
 }
 
@@ -92,6 +94,29 @@ const unpause = () => {
     state.pause = false
 }
 
+const getNextActivity = () => {
+    switch(state.currectActivity) {
+        case activities.POMODORO:
+            const lastLongBreakIdx = state.activityLog.lastIndexOf(activities.LONG_BREAK)
+            let pomodoroSinceLastLongBreak = 0
+            for (let i = Math.max(0, lastLongBreakIdx); i < state.activityLog.length; i++) {
+                if (state.activityLog[i] === activities.POMODORO) {
+                    pomodoroSinceLastLongBreak++
+                }
+            }
+            if (pomodoroSinceLastLongBreak > 3)  return  activities.LONG_BREAK
+            return activities.SHORT_BREAK
+        case activities.SHORT_BREAK:
+        case activities.LONG_BREAK:
+            return activities.POMODORO
+        default:
+            return activities.POMODORO
+    }
+}
+
+const startNextActivity = () => {
+
+}
 
 const Pomidorek = {
     start: start,
@@ -99,11 +124,15 @@ const Pomidorek = {
     unpause: unpause,
     isPaused: () => state.pause,
     reset: reset,
-    setActivity: setActivity,
     addTime: addTime,
     getTimeRemaining: () => state.timeLeftMillis,
     setPulseCallback: (callback) => state.onPulse = callback,
     getSuggestedTimerValue: getSuggestedTimerValue,
+    getNextActivity: getNextActivity,
+    startNextActivity: startNextActivity,
+    startPomodoro: () => setActivity(activities.POMODORO, false),
+    startShortBreak: () => setActivity(activities.SHORT_BREAK, false),
+    startLongBreak: () => setActivity(activities.LONG_BREAK, false),
 }
 
 export default Pomidorek

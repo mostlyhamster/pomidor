@@ -11,28 +11,30 @@ const buttonIncreaseActivityDuration = document.getElementById('button-activity-
 const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
 
 const timerElement = document.getElementById('timer')
+const nextActivityName = document.getElementById('next-activity-name')
 
 const updateTimerValue = (timeLeftMillis) => {
     timerElement.innerText = Pomidorek.getSuggestedTimerValue()
+    nextActivityName.innerText = 'NEXT UP: ' +  Pomidorek.getNextActivity()
 }
 
 Pomidorek.start();
 Pomidorek.setPulseCallback(updateTimerValue)
 
 buttonShortBreak.addEventListener('click', (event) => {
-    Pomidorek.setActivity(activities.SHORT_BREAK, false)
+    Pomidorek.startShortBreak()
     activityButtons.forEach(btn => btn.classList.remove('is-active'))
     buttonShortBreak.classList.add('is-active')
 });
 
 buttonLongBreak.addEventListener('click', (event) => {
-    Pomidorek.setActivity(activities.LONG_BREAK, false)
+    Pomidorek.startLongBreak()
     activityButtons.forEach(btn => btn.classList.remove('is-active'))
     buttonLongBreak.classList.add('is-active')
 });
 
 buttonPomodoro.addEventListener('click', (event) => {
-    Pomidorek.setActivity(activities.POMODORO, false)
+    Pomidorek.startPomodoro()
     activityButtons.forEach(btn => btn.classList.remove('is-active'))
     buttonPomodoro.classList.add('is-active')
 });

@@ -54,3 +54,39 @@ test('Pulse callback is called after 2 times per second', () => {
   expect(callback).toHaveBeenCalledTimes(2);
 })
 
+test('Next activity after a pomodoro is a short break', () => {
+  Pomidorek.startPomodoro()
+  expect(Pomidorek.getNextActivity()).toEqual('short break')
+})
+
+test('Next activity after a short break is a pomodoro', () => {
+  Pomidorek.startShortBreak()
+  expect(Pomidorek.getNextActivity()).toEqual('pomodoro')
+})
+
+test('Next activity after a long break is a pomodoro', () => {
+  Pomidorek.startLongBreak()
+  expect(Pomidorek.getNextActivity()).toEqual('pomodoro')
+})
+
+test('Next activity after four pomodoros without long break is a long break', () => {
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  expect(Pomidorek.getNextActivity()).toEqual('long break')
+})
+
+test('Next activity after 2 without long break pomodoros is a short break', () => {
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startLongBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  expect(Pomidorek.getNextActivity()).toEqual('short break')
+})
