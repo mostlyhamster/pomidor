@@ -15,6 +15,7 @@ let state = {
     pause : true,
     currectActivity : activities.POMODORO,
     onPulse: (timeLeftMillis) => true,
+    onActivityChanged: (newActivity) => true,
     activityLog: [],
 }
 
@@ -56,6 +57,7 @@ const setActivity = (activity, force) => {
     state.lastPulse = new Date()
     state.lastPulse.setMilliseconds(999)
     state.activityLog.push(activity)
+    state.onActivityChanged(activity)
     pulse()
 }
 
@@ -115,7 +117,7 @@ const getNextActivity = () => {
 }
 
 const startNextActivity = () => {
-
+    setActivity(getNextActivity())
 }
 
 const Pomidorek = {
@@ -127,7 +129,9 @@ const Pomidorek = {
     addTime: addTime,
     getTimeRemaining: () => state.timeLeftMillis,
     setPulseCallback: (callback) => state.onPulse = callback,
+    setActivityChangedCallback : (callback)  => state.onActivityChanged = callback,
     getSuggestedTimerValue: getSuggestedTimerValue,
+    getCurrentActivity: () => state.currectActivity,
     getNextActivity: getNextActivity,
     startNextActivity: startNextActivity,
     startPomodoro: () => setActivity(activities.POMODORO, false),

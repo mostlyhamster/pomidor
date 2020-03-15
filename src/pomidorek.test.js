@@ -90,3 +90,34 @@ test('Next activity after 2 without long break pomodoros is a short break', () =
   Pomidorek.startPomodoro()
   expect(Pomidorek.getNextActivity()).toEqual('short break')
 })
+
+test('Starting next activity during pomodoro triggers short break', () => {
+  Pomidorek.startPomodoro()
+  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
+  Pomidorek.startNextActivity()
+  expect(Pomidorek.getCurrentActivity()).toEqual('short break')
+})
+
+test('Starting next activity short break  triggers pomodoro', () => {
+  Pomidorek.startShortBreak()
+  Pomidorek.startNextActivity()
+  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
+})
+
+test('Starting next activity long break  triggers pomodoro', () => {
+  Pomidorek.startLongBreak()
+  Pomidorek.startNextActivity()
+  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
+})
+
+test('Starting next activity after 4 pomodoros without long break triggers long break', () => {
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startShortBreak();
+  Pomidorek.startPomodoro()
+  Pomidorek.startNextActivity()
+  expect(Pomidorek.getCurrentActivity()).toEqual('long break')
+})

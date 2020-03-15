@@ -13,7 +13,7 @@ A desktop pomodoro timer.
     - [x] reset activity duration 
 - [x] Implement activity selection
 - [x] Show next activity
-- [ ] Possibility for fast forward to next activity
+- [x] Possibility for fast forward to next activity
 - [ ] Option to customize duration of activities
 - [ ] Sound alert on activity completion
 - [ ] Sound alert settings: mute, change sound, change volume

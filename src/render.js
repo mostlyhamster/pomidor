@@ -1,4 +1,4 @@
-import  Pomidorek, { activities } from './pomidorek.js'
+import  Pomidorek from './pomidorek.js'
 
 const buttonShortBreak = document.getElementById('button-activity-break-short')
 const buttonLongBreak = document.getElementById('button-activity-break-long')
@@ -18,25 +18,38 @@ const updateTimerValue = (timeLeftMillis) => {
     nextActivityName.innerText = 'NEXT UP: ' +  Pomidorek.getNextActivity()
 }
 
+const changeActiveButton = (activity) => {
+    activityButtons.forEach(btn => btn.classList.remove('is-active'))
+
+    switch(activity) {
+        case 'pomodoro':
+            buttonPomodoro.classList.add('is-active')
+            break;
+        case 'short break':
+            buttonShortBreak.classList.add('is-active')
+            break;
+        case 'long break':
+            buttonLongBreak.classList.add('is-active')
+            break;
+        default:
+            return
+    }
+}
+
 Pomidorek.start();
 Pomidorek.setPulseCallback(updateTimerValue)
+Pomidorek.setActivityChangedCallback(changeActiveButton)
 
 buttonShortBreak.addEventListener('click', (event) => {
     Pomidorek.startShortBreak()
-    activityButtons.forEach(btn => btn.classList.remove('is-active'))
-    buttonShortBreak.classList.add('is-active')
 });
 
 buttonLongBreak.addEventListener('click', (event) => {
     Pomidorek.startLongBreak()
-    activityButtons.forEach(btn => btn.classList.remove('is-active'))
-    buttonLongBreak.classList.add('is-active')
 });
 
 buttonPomodoro.addEventListener('click', (event) => {
     Pomidorek.startPomodoro()
-    activityButtons.forEach(btn => btn.classList.remove('is-active'))
-    buttonPomodoro.classList.add('is-active')
 });
 
 buttonStartActivity.addEventListener('click', (event) => {
@@ -49,4 +62,8 @@ buttonIncreaseActivityDuration.addEventListener('click', (event) => {
 
 buttonResetActivity.addEventListener('click', (event) => {
     Pomidorek.reset()
+})
+
+buttonNextActivity.addEventListener('click', () => {
+    Pomidorek.startNextActivity();
 })
