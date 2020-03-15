@@ -16,6 +16,7 @@ const nextActivityName = document.getElementById('next-activity-name')
 const updateTimerValue = (timeLeftMillis) => {
     timerElement.innerText = Pomidorek.getSuggestedTimerValue()
     nextActivityName.innerText = 'NEXT UP: ' +  Pomidorek.getNextActivity()
+    buttonStartActivity.innerText = Pomidorek.isPaused() ? 'Start' : 'Pause'
 }
 
 const changeActiveButton = (activity) => {
@@ -54,6 +55,7 @@ buttonPomodoro.addEventListener('click', (event) => {
 
 buttonStartActivity.addEventListener('click', (event) => {
     Pomidorek.isPaused() ? Pomidorek.unpause() : Pomidorek.pause()
+    buttonStartActivity.innerText = Pomidorek.isPaused() ? 'Start' : 'Pause'
 })
 
 buttonIncreaseActivityDuration.addEventListener('click', (event) => {
