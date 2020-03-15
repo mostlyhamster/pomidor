@@ -14,9 +14,11 @@ let state = {
     lastPulse : new Date(),
     pause : true,
     currectActivity : activities.POMODORO,
+    activityComplete: false,
     onPulse: (timeLeftMillis) => true,
     onActivityChanged: (newActivity) => true,
     activityLog: [],
+    muted: false,
 }
 
 
@@ -57,6 +59,7 @@ const setActivity = (activity, force) => {
     state.lastPulse = new Date()
     state.lastPulse.setMilliseconds(999)
     state.activityLog.push(activity)
+    state.activityComplete = false
     state.onActivityChanged(activity)
     pulse()
 }
@@ -65,6 +68,10 @@ const pulse = () => {
     const now = new Date()
     if (!state.pause) {
         state.timeLeftMillis = state.timeLeftMillis - (now - state.lastPulse)
+    }
+    if (state.timeLeftMillis <= 0 && state.activityComplete === false) {
+        state.activityComplete = true
+        playSound()
     }
     state.lastPulse = now;
     state.onPulse(state.timeLeftMillis)
@@ -118,6 +125,12 @@ const getNextActivity = () => {
 
 const startNextActivity = () => {
     setActivity(getNextActivity())
+}
+
+const playSound = () => {
+    if (state.muted) return
+    const audio = new Audio('../assets/audio/timer-bell.mp3');
+    audio.play()
 }
 
 const Pomidorek = {
