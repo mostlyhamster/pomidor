@@ -1,23 +1,19 @@
-import Pomidorek from './pomidorek.js'
-
 beforeAll(() => {
   jest.useFakeTimers()
 });
 
 beforeEach(() => jest.resetModules());
 
-test('Test if tests are working', () => {
-  expect(true).toEqual(true)
-})
-
 test('Pomidorek starts out paused by default', () => {
-  expect(Pomidorek.isPaused()).toEqual(true)
+  const pomidorek = require('./pomidorek.js').default
+  expect(pomidorek.isPaused()).toEqual(true)
 })
 
-test('Pulse callback is not called before Pomidorek.start() is invoked', () => {
+test('Pulse callback is not called before pomidorek.start() is invoked', () => {
+  const pomidorek = require('./pomidorek.js').default
   const callback = jest.fn()
 
-  Pomidorek.setPulseCallback(callback)
+  pomidorek.setPulseCallback(callback)
 
   jest.runOnlyPendingTimers();
 
@@ -25,12 +21,13 @@ test('Pulse callback is not called before Pomidorek.start() is invoked', () => {
 
 })
 
-test('Pulse callback is called after Pomidorek.start() is invoked', () => {
+test('Pulse callback is called after pomidorek.start() is invoked', () => {
+  const pomidorek = require('./pomidorek.js').default
   jest.useFakeTimers()
   const callback = jest.fn()
 
-  Pomidorek.start() 
-  Pomidorek.setPulseCallback(callback)
+  pomidorek.start() 
+  pomidorek.setPulseCallback(callback)
 
   expect(callback).not.toBeCalled();
 
@@ -40,11 +37,12 @@ test('Pulse callback is called after Pomidorek.start() is invoked', () => {
 })
 
 test('Pulse callback is called after 2 times per second', () => {
+  const pomidorek = require('./pomidorek.js').default
   jest.useFakeTimers()
   const callback = jest.fn()
 
-  Pomidorek.start() 
-  Pomidorek.setPulseCallback(callback)
+  pomidorek.start() 
+  pomidorek.setPulseCallback(callback)
 
   expect(callback).not.toBeCalled()
 
@@ -55,69 +53,80 @@ test('Pulse callback is called after 2 times per second', () => {
 })
 
 test('Next activity after a pomodoro is a short break', () => {
-  Pomidorek.startPomodoro()
-  expect(Pomidorek.getNextActivity()).toEqual('short break')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startPomodoro()
+  expect(pomidorek.getNextActivity()).toEqual('short break')
 })
 
 test('Next activity after a short break is a pomodoro', () => {
-  Pomidorek.startShortBreak()
-  expect(Pomidorek.getNextActivity()).toEqual('pomodoro')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startShortBreak()
+  expect(pomidorek.getNextActivity()).toEqual('pomodoro')
 })
 
 test('Next activity after a long break is a pomodoro', () => {
-  Pomidorek.startLongBreak()
-  expect(Pomidorek.getNextActivity()).toEqual('pomodoro')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startLongBreak()
+  expect(pomidorek.getNextActivity()).toEqual('pomodoro')
 })
 
 test('Next activity after four pomodoros without long break is a long break', () => {
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  expect(Pomidorek.getNextActivity()).toEqual('long break')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak();
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak();
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak();
+  pomidorek.startPomodoro()
+  expect(pomidorek.getNextActivity()).toEqual('long break')
 })
 
 test('Next activity after 2 without long break pomodoros is a short break', () => {
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startLongBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  expect(Pomidorek.getNextActivity()).toEqual('short break')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak();
+  pomidorek.startPomodoro()
+  pomidorek.startLongBreak();
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak();
+  pomidorek.startPomodoro()
+  expect(pomidorek.getNextActivity()).toEqual('short break')
 })
 
 test('Starting next activity during pomodoro triggers short break', () => {
-  Pomidorek.startPomodoro()
-  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
-  Pomidorek.startNextActivity()
-  expect(Pomidorek.getCurrentActivity()).toEqual('short break')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startPomodoro()
+  expect(pomidorek.getCurrentActivity()).toEqual('pomodoro')
+  pomidorek.startNextActivity()
+  expect(pomidorek.getCurrentActivity()).toEqual('short break')
 })
 
 test('Starting next activity short break  triggers pomodoro', () => {
-  Pomidorek.startShortBreak()
-  Pomidorek.startNextActivity()
-  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startShortBreak()
+  pomidorek.startNextActivity()
+  expect(pomidorek.getCurrentActivity()).toEqual('pomodoro')
 })
 
 test('Starting next activity long break  triggers pomodoro', () => {
-  Pomidorek.startLongBreak()
-  Pomidorek.startNextActivity()
-  expect(Pomidorek.getCurrentActivity()).toEqual('pomodoro')
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startLongBreak()
+  pomidorek.startNextActivity()
+  expect(pomidorek.getCurrentActivity()).toEqual('pomodoro')
 })
 
 test('Starting next activity after 4 pomodoros without long break triggers long break', () => {
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startShortBreak();
-  Pomidorek.startPomodoro()
-  Pomidorek.startNextActivity()
-  expect(Pomidorek.getCurrentActivity()).toEqual('long break')
+  const pomidorek = require('./pomidorek.js').default
+
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak()
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak()
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak()
+  pomidorek.startPomodoro()
+
+  pomidorek.startNextActivity()
+  expect(pomidorek.getCurrentActivity()).toEqual('long break')
 })
