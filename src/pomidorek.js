@@ -18,7 +18,7 @@ let state = {
     activityComplete: false,
     onPulse: (timeLeftMillis) => true,
     onActivityChanged: (newActivity) => true,
-    activityLog: [],
+    activityLog: [], // {activity: string, date: Date}
     muted: false,
     notificationsEnabled: true,
 }
@@ -52,12 +52,12 @@ const getActivityDurationInSeconds = (activity) => {
 }
 
 const setActivity = (activity, force) => {
-    if (activity === state.currectActivity && force === false) return
+    if (activity === state.currectActivity && force === false && state.activityLog.length > 0) return
     state.currectActivity = activity;
     state.timeLeftMillis = getActivityDurationInSeconds(activity) * 1000
     state.lastPulse = new Date()
     state.lastPulse.setMilliseconds(999)
-    state.activityLog.push(activity)
+    state.activityLog.push({activity, date: new Date()})
     state.activityComplete = false
     state.onActivityChanged(activity)
     pulse()
@@ -106,10 +106,10 @@ const unpause = () => {
 const getNextActivity = () => {
     switch (state.currectActivity) {
         case activities.POMODORO:
-            const lastLongBreakIdx = state.activityLog.lastIndexOf(activities.LONG_BREAK)
+            const lastLongBreakIdx = findtLastIndexOfActivityInLog(activities.LONG_BREAK)
             let pomodoroSinceLastLongBreak = 0
             for (let i = Math.max(0, lastLongBreakIdx); i < state.activityLog.length; i++) {
-                if (state.activityLog[i] === activities.POMODORO) {
+                if (state.activityLog[i].activity === activities.POMODORO) {
                     pomodoroSinceLastLongBreak++
                 }
             }
@@ -121,6 +121,14 @@ const getNextActivity = () => {
         default:
             return activities.POMODORO
     }
+}
+
+const findtLastIndexOfActivityInLog = (targetActivity) => {
+    for (let i = state.activityLog.length - 1; i >= 0; i--) {
+        const activityLogItem = state.activityLog[i];
+        if (activityLogItem.activity === targetActivity) return i
+    }
+    return -1
 }
 
 const startNextActivity = () => {
@@ -164,6 +172,7 @@ const Pomidorek = {
     startPomodoro: () => setActivity(activities.POMODORO, false),
     startShortBreak: () => setActivity(activities.SHORT_BREAK, false),
     startLongBreak: () => setActivity(activities.LONG_BREAK, false),
+    getActivityLog: () => state.activityLog,
 }
 
 export default Pomidorek

@@ -130,3 +130,18 @@ test('Starting next activity after 4 pomodoros without long break triggers long 
   pomidorek.startNextActivity()
   expect(pomidorek.getCurrentActivity()).toEqual('long break')
 })
+
+test('Retrieving activity log without any activities performed yields empty array', () => {
+  const pomidorek = require('./pomidorek.js').default
+  const activityLog = pomidorek.getActivityLog()
+  expect(activityLog).toEqual([])
+})
+
+test('Activity log keeps activities in order', () => {
+  const pomidorek = require('./pomidorek.js').default
+  pomidorek.startPomodoro()
+  pomidorek.startShortBreak()
+  pomidorek.startLongBreak()
+  const activities = pomidorek.getActivityLog().map(i => i.activity)
+  expect(activities).toEqual(['pomodoro', 'short break', 'long break'])
+})
