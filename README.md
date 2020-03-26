@@ -22,6 +22,9 @@ A desktop pomodoro timer.
 - [ ] Track pauses in log as parts of activities
 - [ ] Keyboard shortcuts
 - [ ] Add funny quotes
+- [ ] Design improvements
+    - [ ] Still be pretty and functional when window is very small size
+
 
 ## Issues and bugs
 
