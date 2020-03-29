@@ -53,7 +53,7 @@ const getActivityDurationInSeconds = (activity) => {
 
 const setActivity = (activity, force) => {
     if (activity === state.currectActivity && force === false && state.activityLog.length > 0) return
-    state.activityLog.push({activity:state.currectActivity, date: new Date()})
+    state.activityLog.push({activity: activity, date: new Date()})
     state.currectActivity = activity;
     state.timeLeftMillis = getActivityDurationInSeconds(activity) * 1000
     state.lastPulse = new Date()

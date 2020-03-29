@@ -145,7 +145,3 @@ test('Activity log keeps activities in order', () => {
   const activities = pomidorek.getActivityLog().map(i => i.activity)
   expect(activities).toEqual(['pomodoro', 'short break', 'long break'])
 })
-
-test('', () => {
-  
-})

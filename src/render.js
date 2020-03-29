@@ -78,10 +78,10 @@ window.addEventListener('resize', (e) => {
 window.addEventListener('activity', (e) => {
     const log = Pomidorek.getActivityLog()
     activityLogElement.innerHTML = ''
-    log.reverse().forEach(element => {
+    log.forEach(element => {
         const itemNode = document.importNode(activityLogItemTemplateElement.content, true)
         itemNode.getElementById('time').innerText = element.date.toTimeString().split(' ')[0]
         itemNode.getElementById('activity').innerText = element.activity
-        activityLogElement.appendChild(itemNode)
+        activityLogElement.prepend(itemNode)
     })
 })
