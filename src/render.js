@@ -9,7 +9,8 @@ const buttonNextActivity = document.getElementById('button-activity-next')
 const buttonIncreaseActivityDuration = document.getElementById('button-activity-increase-duration')
 const timerElement = document.getElementById('timer')
 const nextActivityName = document.getElementById('next-activity-name')
-const header = document.getElementById('header');
+const activityLogElement = document.getElementById('activity-log')
+const activityLogItemTemplateElement = document.getElementById('activity-log-item-template')
 
 const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
 
@@ -72,4 +73,15 @@ buttonNextActivity.addEventListener('click', () => {
 
 window.addEventListener('resize', (e) => {
   
+})
+
+window.addEventListener('activity', (e) => {
+    const log = Pomidorek.getActivityLog()
+    activityLogElement.innerHTML = ''
+    log.reverse().forEach(element => {
+        const itemNode = document.importNode(activityLogItemTemplateElement.content, true)
+        itemNode.getElementById('time').innerText = element.date.toTimeString().split(' ')[0]
+        itemNode.getElementById('activity').innerText = element.activity
+        activityLogElement.appendChild(itemNode)
+    })
 })
