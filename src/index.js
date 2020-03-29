@@ -14,6 +14,8 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 800,
+    frame: true,
+    titleBarStyle: 'hiddenInset',
   });
 
   // and load the index.html of the app.

@@ -7,11 +7,11 @@ const buttonResetActivity = document.getElementById('button-activity-reset')
 const buttonStartActivity = document.getElementById('button-activity-start')
 const buttonNextActivity = document.getElementById('button-activity-next')
 const buttonIncreaseActivityDuration = document.getElementById('button-activity-increase-duration')
-
-const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
-
 const timerElement = document.getElementById('timer')
 const nextActivityName = document.getElementById('next-activity-name')
+const header = document.getElementById('header');
+
+const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
 
 const updateTimerValue = (timeLeftMillis) => {
     timerElement.innerText = Pomidorek.getSuggestedTimerValue()
@@ -68,4 +68,8 @@ buttonResetActivity.addEventListener('click', (event) => {
 
 buttonNextActivity.addEventListener('click', () => {
     Pomidorek.startNextActivity();
+})
+
+window.addEventListener('resize', (e) => {
+  
 })
