@@ -24,6 +24,9 @@ A desktop pomodoro timer.
 - [ ] Add funny quotes
 - [ ] Design improvements
     - [ ] Still be pretty and functional when window is very small size
+- [ ] store activication history locally
+- [ ] Make it work in background
+- [ ] Possible to show status on taskbar?
 
 
 ## Issues and bugs
