@@ -10,6 +10,11 @@ const DEFAULT_DURATION_POMODORO_SECONDS = 25 * 60
 const DEFAULT_DURATION_SHORT_BREAK_SECONDS = 5 * 60
 const DEFAULT_DURATION_LONG_BREAK_SECONDS = 15 * 60
 
+let options = {
+    muted: false,
+    notificationsEnabled: true,
+}
+
 let state = {
     timeLeftMillis: 0,
     lastPulse: new Date(),
@@ -83,7 +88,9 @@ const getSuggestedTimerValue = () => {
     if (state.timeLeftMillis <= 0) {
         return '00:00'
     } else {
-        return new String(time.getMinutes()).padStart(2, '0') + ':' + new String(time.getSeconds()).padStart(2, '0')
+        const minutes = new String(time.getMinutes()).padStart(2, '0')
+        const seconds = new String(time.getSeconds()).padStart(2, '0')
+        return minutes + ':' + seconds
     }
 }
 
@@ -93,14 +100,11 @@ const reset = () => {
 }
 
 const pause = () => {
-    console.log('pause')
     if (state.pause) return;
     state.pause = true
 }
 
-
 const unpause = () => {
-    console.log('unpause')
     state.pause = false
 }
 
