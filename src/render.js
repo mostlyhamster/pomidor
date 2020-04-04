@@ -1,4 +1,4 @@
-import  Pomidorek from './pomidorek.js'
+import  Pomidorek from './pomidorek'
 
 const buttonShortBreak = document.getElementById('button-activity-break-short')
 const buttonLongBreak = document.getElementById('button-activity-break-long')
