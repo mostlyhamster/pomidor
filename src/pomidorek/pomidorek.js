@@ -21,7 +21,6 @@ let state = {
     pause: true,
     currectActivity: activities.POMODORO,
     activityComplete: false,
-    onPulse: (timeLeftMillis) => true,
     onActivityChanged: (newActivity) => true,
     activityLog: [], // {activity: string, date: Date}
     muted: false,
@@ -43,7 +42,6 @@ const addTime = (timeMillis) => {
 }
 
 const getActivityDurationInSeconds = (activity) => {
-    console.log('check activity ', activity)
     switch (activity) {
         case activities.POMODORO:
             return DEFAULT_DURATION_POMODORO_SECONDS
@@ -80,7 +78,7 @@ const pulse = () => {
         showNotification()
     }
     state.lastPulse = now;
-    state.onPulse(state.timeLeftMillis)
+    dispatchEvent(new Event('pulse'))
 }
 
 const getSuggestedTimerValue = () => {
@@ -168,7 +166,6 @@ const Pomidorek = {
     reset: reset,
     addTime: addTime,
     getTimeRemaining: () => state.timeLeftMillis,
-    setPulseCallback: (callback) => state.onPulse = callback,
     setActivityChangedCallback: (callback) => state.onActivityChanged = callback,
     getSuggestedTimerValue: getSuggestedTimerValue,
     getCurrentActivity: () => state.currectActivity,

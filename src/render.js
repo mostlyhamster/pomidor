@@ -1,4 +1,4 @@
-import  Pomidorek from './pomidorek'
+import  Pomidorek from './pomidorek/pomidorek.js'
 
 const buttonShortBreak = document.getElementById('button-activity-break-short')
 const buttonLongBreak = document.getElementById('button-activity-break-long')
@@ -13,12 +13,6 @@ const activityLogElement = document.getElementById('activity-log')
 const activityLogItemTemplateElement = document.getElementById('activity-log-item-template')
 
 const activityButtons = [buttonShortBreak, buttonLongBreak, buttonPomodoro]
-
-const updateTimerValue = (timeLeftMillis) => {
-    timerElement.innerText = Pomidorek.getSuggestedTimerValue()
-    nextActivityName.innerText = 'NEXT UP: ' +  Pomidorek.getNextActivity()
-    buttonStartActivity.innerText = Pomidorek.isPaused() ? 'Start' : 'Pause'
-}
 
 const changeActiveButton = (activity) => {
     activityButtons.forEach(btn => btn.classList.remove('is-active'))
@@ -39,7 +33,6 @@ const changeActiveButton = (activity) => {
 }
 
 Pomidorek.start();
-Pomidorek.setPulseCallback(updateTimerValue)
 Pomidorek.setActivityChangedCallback(changeActiveButton)
 
 buttonShortBreak.addEventListener('click', (event) => {
@@ -84,4 +77,10 @@ window.addEventListener('activity', (e) => {
         itemNode.getElementById('activity').innerText = element.activity
         activityLogElement.prepend(itemNode)
     })
+})
+
+window.addEventListener('pulse', (event) => {
+    timerElement.innerText = Pomidorek.getSuggestedTimerValue()
+    nextActivityName.innerText = 'NEXT UP: ' +  Pomidorek.getNextActivity()
+    buttonStartActivity.innerText = Pomidorek.isPaused() ? 'Start' : 'Pause'
 })

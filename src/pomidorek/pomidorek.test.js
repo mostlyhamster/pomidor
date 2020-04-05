@@ -9,49 +9,6 @@ test('Pomidorek starts out paused by default', () => {
   expect(pomidorek.isPaused()).toEqual(true)
 })
 
-test('Pulse callback is not called before pomidorek.start() is invoked', () => {
-  const pomidorek = require('./pomidorek.js').default
-  const callback = jest.fn()
-
-  pomidorek.setPulseCallback(callback)
-
-  jest.runOnlyPendingTimers();
-
-  expect(callback).not.toBeCalled();
-
-})
-
-test('Pulse callback is called after pomidorek.start() is invoked', () => {
-  const pomidorek = require('./pomidorek.js').default
-  jest.useFakeTimers()
-  const callback = jest.fn()
-
-  pomidorek.start() 
-  pomidorek.setPulseCallback(callback)
-
-  expect(callback).not.toBeCalled();
-
-  jest.runOnlyPendingTimers()
-
-  expect(callback).toBeCalled()
-})
-
-test('Pulse callback is called after 2 times per second', () => {
-  const pomidorek = require('./pomidorek.js').default
-  jest.useFakeTimers()
-  const callback = jest.fn()
-
-  pomidorek.start() 
-  pomidorek.setPulseCallback(callback)
-
-  expect(callback).not.toBeCalled()
-
-  jest.advanceTimersByTime(1000)
-
-  expect(callback).toBeCalled()
-  expect(callback).toHaveBeenCalledTimes(2);
-})
-
 test('Next activity after a pomodoro is a short break', () => {
   const pomidorek = require('./pomidorek.js').default
   pomidorek.startPomodoro()
