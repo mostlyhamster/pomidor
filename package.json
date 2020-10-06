@@ -57,7 +57,7 @@
     "@electron-forge/maker-squirrel": "6.0.0-beta.41",
     "@electron-forge/maker-zip": "6.0.0-beta.41",
     "babel-jest": "^25.1.0",
-    "electron": "8.1.1",
+    "electron": "8.5.2",
     "jest": "^25.1.0"
   }
 }
